@@ -63,40 +63,4 @@ client.on("messageCreate", (message) =>{
   }
 }
   );
-//Serveur HTTP
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
-
-const serveFile = (res, filePath) => {
-    fs.readFile(filePath, (err, data) => {
-        if (err) {
-            res.writeHead(500, { 'Content-Type': 'text/plain' });
-            res.end('500 - Internal Server Error');
-        } else {
-            res.writeHead(200, { 'Content-Type': 'text/html' });
-            res.end(data);
-        }
-    });
-};
-
-const server = http.createServer((req, res) => {
-    if (req.url === '/') {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end('<html><body><h1>Welcome</h1><p><a href="/terms-of-service">Terms of Service</a></p><p><a href="/privacy-policies">Privacy Policy</a></p></body></html>');
-    } else if (req.url === '/terms-of-service') {
-        serveFile(res, path.join(__dirname, 'terms-of-service/index.html'));
-    } else if (req.url === '/pricacy-policies') {
-        serveFile(res, path.join(__dirname, 'privacy-policies/index.html'));
-    } else {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('404 - Not Found');
-    }
-});
-
-server.listen(3000, () => {
-    console.log('Server running at http://127.0.0.1:3000/');
-});
-
-
 client.login(process.env.TOKEN);
