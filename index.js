@@ -63,12 +63,11 @@ client.on("messageCreate", (message) =>{
   }
 }
   );
-//Server
+//Serveur HTTP
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-// Function to serve an HTML file
 const serveFile = (res, filePath) => {
     fs.readFile(filePath, (err, data) => {
         if (err) {
@@ -81,26 +80,20 @@ const serveFile = (res, filePath) => {
     });
 };
 
-// Create an HTTP server
 const server = http.createServer((req, res) => {
     if (req.url === '/') {
-        // Serve a simple homepage or redirect to one of the pages
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end('<html><body><h1>Welcome</h1><p><a href="/terms-of-service">Terms of Service</a></p><p><a href="/privacy-policies">Privacy Policy</a></p></body></html>');
     } else if (req.url === '/terms-of-service') {
-        // Serve the terms of service HTML file
         serveFile(res, path.join(__dirname, 'terms-of-service/index.html'));
     } else if (req.url === '/pricacy-policies') {
-        // Serve the privacy policy HTML file
         serveFile(res, path.join(__dirname, 'privacy-policies/index.html'));
     } else {
-        // Serve a 404 not found response for any other request
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('404 - Not Found');
     }
 });
 
-// Listen on port 3000, IP defaults to 127.0.0.1
 server.listen(3000, () => {
     console.log('Server running at http://127.0.0.1:3000/');
 });
